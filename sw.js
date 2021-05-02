@@ -7,7 +7,7 @@ const DYNAMIC_CACHE   = 'dynamic-v1';
 const INMUTABLE_CACHE = 'inmutable-v1';
 
 const  APP_SHELL_STATIC = [  // Aqui esta el corazon de la App y lo que debe cargarse los mas rápido posible
-    '/',
+    // '/',
     'index.html',
     'css/style.css',
     'img/favicon.ico',
