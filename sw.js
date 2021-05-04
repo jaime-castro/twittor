@@ -2,11 +2,11 @@
 
 importScripts('js/sw-utils.js');
 
-const STATIC_CACHE    = 'static-v2';
-const DYNAMIC_CACHE   = 'dynamic-v1';
+const STATIC_CACHE = 'static-v3';
+const DYNAMIC_CACHE = 'dynamic-v1';
 const INMUTABLE_CACHE = 'inmutable-v1';
 
-const  APP_SHELL_STATIC = [  // Aqui esta el corazon de la App y lo que debe cargarse los mas rápido posible
+const APP_SHELL_STATIC = [ // Aqui esta el corazon de la App y lo que debe cargarse los mas rápido posible
     // '/',
     'index.html',
     'css/style.css',
@@ -30,10 +30,10 @@ const APP_SHELL_INMUTABLE = [ // Aqui va todo lo que nunca va a cambiar en la Ap
 
 self.addEventListener('install', e => {
 
-    const cacheStatic = caches.open(STATIC_CACHE).then(cache => 
+    const cacheStatic = caches.open(STATIC_CACHE).then(cache =>
         cache.addAll(APP_SHELL_STATIC));
 
-    const cacheInmutable = caches.open(INMUTABLE_CACHE).then(cache => 
+    const cacheInmutable = caches.open(INMUTABLE_CACHE).then(cache =>
         cache.addAll(APP_SHELL_INMUTABLE));
 
     e.waitUntil(Promise.all([cacheStatic, cacheInmutable]));
@@ -57,16 +57,15 @@ self.addEventListener('activate', e => { // Aqui se activa el SW y vamos a usarl
 
 self.addEventListener('fetch', e => {
 
-    const   respuesta = caches.match(e.request).then(res => {
-            if (res) {
-                return res;
-            } else {
-                return fetch(e.request).then( newRes => {
-                    return actualizaCacheDinamico(DYNAMIC_CACHE, e.request, newRes);
-                });
-            }
+    const respuesta = caches.match(e.request).then(res => {
+        if (res) {
+            return res;
+        } else {
+            return fetch(e.request).then(newRes => {
+                return actualizaCacheDinamico(DYNAMIC_CACHE, e.request, newRes);
+            });
+        }
     });
 
     e.respondWith(respuesta);
 });
-
