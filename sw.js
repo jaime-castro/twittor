@@ -58,7 +58,11 @@ self.addEventListener('activate', e => { // Aqui se activa el SW y vamos a usarl
 
 });
 
+console.log("Antes del fetch");
+
 self.addEventListener('fetch', e => {
+
+    console.log("Entre al fetch");
 
     const respuesta = caches.match(e.request).then(res => {
         if (res) {
